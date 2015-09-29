@@ -1,6 +1,7 @@
 require "playerIO"
 require "mapIO"
 require "tilesLoad"
+require "npc"
 
 
 -- screen can only show 20x18 tiles (160x144 pixels), but many games use ...
