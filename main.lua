@@ -29,40 +29,31 @@ function adjustPlayerTile()
 	end
 end
 
-function checkIfNotSolid(tileNum)
+function findObject(tileNum)
 	for _,obj in pairs(map.objects) do
-		if table.contains(obj.sprites,tileNum) then return obj.passable end
+		if table.contains(obj.sprites,tileNum) then return obj end
 	end
 	print("Object not found!")
+end
+
+function checkIfNotSolid(tileNum)
+	return findObject(tileNum).passable
 end
 
 function isInteractable(tileNum)
-	for _,obj in pairs(map.objects) do
-		if table.contains(obj.sprites,tileNum) then
-			return obj.interactable
-		end
-	end
-	print("Object not found!")
+	return findObject(tileNum).interactable
 end
 
 function interact(player, tileNum)
-	for _,obj in pairs(map.objects) do
-		if table.contains(obj.sprites,tileNum) then
-			if obj.class == "talk" then
-				print("msg:"..obj.message)
-			end
-		end
+	obj = findObject(tileNum)
+	if obj.class == "talk" then
+		print("msg:"..obj.message)
 	end
-
-	
 end
-
-
 
 function checkForPortal(tileNum,player)
 	for _,obj in pairs(map.portals) do
 		if obj[1] == player.x and obj[2] == player.y  then
-			print("Found portal!")
 			player.map = obj[3]
 			player.x = obj[4]
 			player.y = obj[5]

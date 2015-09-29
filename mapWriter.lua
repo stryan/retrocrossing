@@ -34,6 +34,7 @@ mapData = {
 		door = {sprites = {17}, passable = true, portal = true, class = 'env', interactable = false},
 		sign = {sprites = {22}, passable = false, portal = false, message = "Hello world!", interactable = true, class = 'talk'}
 	}
+
 }
 
 out = json.encode(mapData)
@@ -43,10 +44,6 @@ out = json.encode(mapData)
 
 print(out)
 res = json.decode(out)
-print(res.tiles[1][3])
-for k,v in pairs(res.tiles) do
-	for i,j in pairs(v) do print(i,j) end
-end
-io.output("map1.json")
+io.output("maps/map1.json")
 
 io.write(out)
