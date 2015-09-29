@@ -12,7 +12,7 @@ mapData = {
 		{3,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2},
 		{3,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2},
 		{3,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2},
-		{3,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2},
+		{3,2,1,1,1,22,1,1,1,1,1,1,1,1,1,1,1,1,3,2},
 		{3,2,3,2,3,2,1,1,3,2,3,2,3,2,3,2,3,2,3,2},
 		{3,2,1,18,16,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2},
 		{3,2,1,19,14,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2},
@@ -28,10 +28,11 @@ mapData = {
 	},
 
 	objects = {
-		tree = { sprites = {2,3}, passable = false },
-		grass = {sprites = {1}, passable = true },
-		building = { sprites = {14,15,16,18,19,20}, passable = false },
-		door = {sprites = {17}, passable = true, portal = true}
+		tree = { sprites = {2,3}, passable = false, class = 'env', interactable = false },
+		grass = {sprites = {1}, passable = true, class = 'env', interactable = false},
+		building = { sprites = {14,15,16,18,19,20}, passable = false, class = 'env', interactable = false },
+		door = {sprites = {17}, passable = true, portal = true, class = 'env', interactable = false},
+		sign = {sprites = {22}, passable = false, portal = false, message = "Hello world!", interactable = true, class = 'talk'}
 	}
 }
 

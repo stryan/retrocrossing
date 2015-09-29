@@ -1,5 +1,6 @@
 require "playerIO"
 require "mapIO"
+require "tilesLoad"
 
 
 -- screen can only show 20x18 tiles (160x144 pixels), but many games use ...
@@ -35,6 +36,29 @@ function checkIfNotSolid(tileNum)
 	print("Object not found!")
 end
 
+function isInteractable(tileNum)
+	for _,obj in pairs(map.objects) do
+		if table.contains(obj.sprites,tileNum) then
+			return obj.interactable
+		end
+	end
+	print("Object not found!")
+end
+
+function interact(player, tileNum)
+	for _,obj in pairs(map.objects) do
+		if table.contains(obj.sprites,tileNum) then
+			if obj.class == "talk" then
+				print("msg:"..obj.message)
+			end
+		end
+	end
+
+	
+end
+
+
+
 function checkForPortal(tileNum,player)
 	for _,obj in pairs(map.portals) do
 		if obj[1] == player.x and obj[2] == player.y  then
@@ -49,30 +73,11 @@ function checkForPortal(tileNum,player)
 end
 
 function love.load(arg)
-	tile21 = love.graphics.newImage('assets/blank.png')
-	tile01 = love.graphics.newImage('assets/grass.png')
-	tile02 = love.graphics.newImage('assets/treelower.png')
-	tile03 = love.graphics.newImage('assets/treeupper.png')
-	tile04 = love.graphics.newImage('assets/playerDown.png')
-	tile05 = love.graphics.newImage('assets/playerUp.png')
-	tile06 = love.graphics.newImage('assets/playerLeft.png')
-	tile07 = love.graphics.newImage('assets/playerRight.png')
-	tile08 = love.graphics.newImage('assets/playerWalkUp.png')
-	tile09 = love.graphics.newImage('assets/playerWalkLeft.png')
-	tile10 = love.graphics.newImage('assets/playerWalkRight.png')
-	tile11 = love.graphics.newImage('assets/playerWalkDown.png')
-	tile12 = love.graphics.newImage('assets/playerWalkDown2.png')
-	tile13 = love.graphics.newImage('assets/playerWalkUp2.png')
-	tile14 = love.graphics.newImage('assets/buildingMiddleBottom.png')
-	tile15 = love.graphics.newImage('assets/buildingRightEdge.png')
-	tile16 = love.graphics.newImage('assets/buildingLeftEdge.png')
-	tile17 = love.graphics.newImage('assets/door.png')
-	tile18 = love.graphics.newImage('assets/roofLeftEdge.png')
-	tile19 = love.graphics.newImage('assets/roofMiddleTop.png')
-	tile20 = love.graphics.newImage('assets/roofRightEdge.png')
-	tiles = { tile01,tile02,tile03,tile04,tile05,tile06,tile07,tile08,tile09,tile10,tile11,tile12,tile13,tile14,tile15,
-		tile16,tile17,tile18,tile19,tile20,tile21 }
+	tiles = loadTiles()
 	map = loadMap(0,player,player.map)
+	gameFont = love.graphics.newFont('assets/poke.ttf',8)
+	love.graphics.setFont(gameFont)
+	
 	--playerIO.loadPlayer(player)
 end
 
@@ -93,6 +98,21 @@ function love.update(dt)
 		print("redrawing map")
 		map = loadMap(0,player,player.map)
 	end
+	if love.keyboard.isDown('a') and moveTimer < 0 then
+		px = player.x
+		py = player.y
+		if player.direction == 'n' and isInteractable(map.tiles[px][py-1]) then
+			interact(player,map.tiles[px][py-1])
+		elseif player.direction == 'e' and isInteractable(map.tiles[px-1][py]) then
+			interact(player,map.tiles[px-1][py])
+		elseif player.direction == 'w' and isInteractable(map.tiles[px+1][py]) then
+			interact(player,map.tiles[px+1][py])
+		elseif player.direction == 's' and isInteractable(map.tiles[px][py+1]) then
+			intreact(player,map.tiles[px][py+1])
+		end
+		moveTimer = moveTimerMax
+	end
+			
 	if moveTime == moveTimeMax then adjustPlayerTile() end
 	moveTimer = moveTimer - (1 * dt)
 	if moveTimer < 0  and love.keyboard.isDown('left','right','up','down') then
